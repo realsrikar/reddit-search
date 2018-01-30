@@ -21,7 +21,7 @@ function fetData(request) {
         "${res.data.title}"
         <span class="info d-block my-2">
         <a href="https://reddit.com/${res.data.subreddit_name_prefixed}" target="_blank" rel="nofollow noopener noreferrer">${res.data.subreddit_name_prefixed}</a>
-        &mdash; <a target="_blank" rel="nofollow noopener noreferrer" href="https://reddit.com${res.data.permalink}">Comments</a>.
+        &mdash; <a target="_blank" rel="nofollow noopener noreferrer" href="https://reddit.com${res.data.permalink}">Comments</a>
         </span>
         <span class="text-warning gold ${res.data.gilded != 0 ? 'd-block' : 'd-none'}">
         ${res.data.gilded != 0 ? res.data.gilded : ''} &times;
