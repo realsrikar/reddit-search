@@ -8,7 +8,7 @@ You can visit [realsrikar/reddit-search](https://realsrikar.github.io/reddit-sea
 
 - Uses the fetch API for JSON requests
 - Does _not_ use jQuery
-- Does _not_ use any framework
+- Does _not_ use any JS framework
 - Bootstrap
 
 ## Features
