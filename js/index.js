@@ -27,11 +27,7 @@ function fetData(request) {
         ${res.data.gilded != 0 ? res.data.gilded : ''} &times;
         </span>
 
-
-
-
         ${preview(res.data.preview, res.data.url)}
-
 
         </p>`
 
@@ -51,7 +47,7 @@ form.addEventListener('submit', getData)
 function getData(e) {
   e.preventDefault()
   let InputVal = input.value.replace(/ /gi, '+').replace(/‘/gi, '&lsquo;').replace(/’/gi, '&rsquo;').replace(/“/gi, '&ldquo;').replace(/”/gi, '&rdquo;'),
-  OriginalInputVal = input.value
+    OriginalInputVal = input.value
   container.innerHTML = ''
   fetData(InputVal)
   saveToStorage(OriginalInputVal)
