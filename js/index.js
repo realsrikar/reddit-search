@@ -15,10 +15,10 @@ function fetData(request) {
         <img src="https://img.4plebs.org/boards/s4s/image/1385/00/1385006781269.png" width="15" style="margin-right: .25em; transform: translate(2px, -1px);">
         ${res.data.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
         </span>
-        
+
         <a target="_blank" rel="nofollow noopener noreferrer" href="https://reddit.com/u/${res.data.author}">u/${res.data.author}</a>:
-        
-        "${res.data.title}" 
+
+        "${res.data.title}"
         <span class="info d-block my-2">
         <a href="https://reddit.com/${res.data.subreddit_name_prefixed}" target="_blank" rel="nofollow noopener noreferrer">${res.data.subreddit_name_prefixed}</a>
         &mdash; <a target="_blank" rel="nofollow noopener noreferrer" href="https://reddit.com${res.data.permalink}">Comments</a>.
@@ -50,17 +50,18 @@ form.addEventListener('submit', getData)
 
 function getData(e) {
   e.preventDefault()
-  let InputVal = input.value.replace(/ /gi, '+')
+  let InputVal = input.value.replace(/ /gi, '+').replace(/‘/gi, '&lsquo;').replace(/’/gi, '&rsquo;').replace(/“/gi, '&ldquo;').replace(/”/gi, '&rdquo;'),
+  OriginalInputVal = input.value
   container.innerHTML = ''
   fetData(InputVal)
-  saveToStorage(InputVal)
+  saveToStorage(OriginalInputVal)
 }
 
 function preview(ar, link) {
   if (!ar) return '';
 
   const image = ar.images[0].source
-  
+
   const ht = image.height + 'px'
   const wt = '100%' || image.width + 'px'
   const url = image.url
@@ -73,7 +74,7 @@ function preview(ar, link) {
 function saveToStorage(query) {
   queryArray = [query]
   localStorage.setItem('query', JSON.stringify(queryArray))
-  fetData(JSON.parse(localStorage.getItem('query'))[0])
+  fetData(JSON.parse(localStorage.getItem('query'))[0].replace(/ /gi, '+').replace(/‘/gi, '&lsquo;').replace(/’/gi, '&rsquo;').replace(/“/gi, '&ldquo;').replace(/”/gi, '&rdquo;'))
 }
 
 
