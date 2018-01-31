@@ -2,6 +2,7 @@ const CACHE_NAME = 'my-site-cache-v1';
 const urlsToCache = [
 	'./css/style.css',
 	'./img/arrow_down.svg',
+	'./css/bootstrap.css',
 	'./img/arrow_up.svg',
 	'./img/reddit-sheet.png',
 	'./img/updoot.png',
