@@ -83,12 +83,12 @@ function getData(e) {
 function preview(ar, link) {
   if (!ar) return '';
 
-  const image = ar.images[0].source
+  let image = ar.images[0].variants.gif ? ar.images[0].variants.gif.source : ar.images[0].source
+
 
   const ht = image.height + 'px'
   const wt = '100%' || image.width + 'px'
   const url = image.url
-
   return `<a target="_blank" rel="nofollow noopener noreferrer" href="${link}">
   <img src="${url}" style="max-height: ${ht / 9 * 16}; margin: 0.5em 0; max-width: 100%;" class="d-block mx-auto">
   </a>`
