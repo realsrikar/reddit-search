@@ -10,7 +10,7 @@ function fetData(request) {
     .then(blob => {
       blob.forEach(res => {
         container.innerHTML += `
-        <p>
+        <section class="post">
         <span class="score d-block">
         <img src="https://img.4plebs.org/boards/s4s/image/1385/00/1385006781269.png" width="15" style="margin-right: .25em; transform: translate(2px, -1px);">
         ${res.data.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -23,16 +23,20 @@ function fetData(request) {
         <a href="https://reddit.com/${res.data.subreddit_name_prefixed}" target="_blank" rel="nofollow noopener noreferrer">${res.data.subreddit_name_prefixed}</a>
         &mdash; <a target="_blank" rel="nofollow noopener noreferrer" href="https://reddit.com${res.data.permalink}">Comments</a>
         </span>
+
+        
         <span class="text-warning gold ${res.data.gilded != 0 ? 'd-block' : 'd-none'}">
         ${res.data.gilded != 0 ? res.data.gilded : ''} &times;
         </span>
-
+        
+        ${selfText(res)}
         ${preview(res.data.preview, res.data.url)}
 
-        </p>`
+        </section>`
 
 
       })
+    collapse()
     })
     .catch(err => console.info(err));
 }
@@ -63,7 +67,7 @@ function preview(ar, link) {
   const url = image.url
 
   return `<a target="_blank" rel="nofollow noopener noreferrer" href="${link}">
-  <img src="${url}" style="height: ${ht}; width: ${wt}; margin: 0.5em 0;object-fit: contain; max-height: 400px;" class="d-block mx-auto">
+  <img src="${url}" style="max-height: ${ht / 9 * 16}; margin: 0.5em 0; max-width: 100%;" class="d-block mx-auto">
   </a>`
 }
 
@@ -75,3 +79,30 @@ function saveToStorage(query) {
 
 
 input.addEventListener('click', e => e.target.select())
+
+const stuff = document.getElementById('stuff')
+
+function decodeHtml(html) { // 
+  var txt = document.createElement("textarea");
+  txt.innerHTML = html;
+  return txt.value;
+}
+
+
+function selfText(arg) {
+  if (!arg.data.selftext_html) return ''
+
+  return stuff.innerHTML = `
+  <div class="self-text">
+	  <button class="collapse-icon btn btn-none"></button>
+	  <span class="text">${decodeHtml(arg.data.selftext_html)}</span>
+  </div>`
+}
+
+
+
+function collapse() {
+  const collapseIcon = document.querySelectorAll('.collapse-icon')
+
+  collapseIcon.forEach(el => el.addEventListener('click', e => console.log(e.target.parentElement.classList.toggle('open'))))
+}

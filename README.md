@@ -25,6 +25,6 @@ You can visit [realsrikar/reddit-search](https://realsrikar.github.io/reddit-sea
   - manifest.json
 
 - Show user flair
-- Show self text
 - Use something like webpack to transpile and ugliy JS
 - Rewrite JS so that it's not a mess
+- Optimize
