@@ -82,7 +82,6 @@ function saveToStorage(query) {
 
 input.addEventListener('click', e => e.target.select())
 
-const stuff = document.getElementById('stuff')
 
 function decodeHtml(html) { // 
   var txt = document.createElement("textarea");
@@ -94,7 +93,7 @@ function decodeHtml(html) { //
 function selfText(arg) {
   if (!arg.data.selftext_html) return ''
 
-  return stuff.innerHTML = `
+  return `
   <div class="self-text">
 	  <button class="collapse-icon btn btn-none"></button>
 	  <span class="text">${decodeHtml(arg.data.selftext_html)}</span>
