@@ -36,7 +36,8 @@ function fetData(request) {
 
 
       })
-    collapse()
+      collapse()
+      document.body.classList.remove('hide')
     })
     .catch(err => console.info(err));
 }
@@ -50,6 +51,7 @@ form.addEventListener('submit', getData)
 
 function getData(e) {
   e.preventDefault()
+  document.body.classList.add('hide')
   let InputVal = input.value.replace(/ /gi, '+').replace(/‘/gi, '&lsquo;').replace(/’/gi, '&rsquo;').replace(/“/gi, '&ldquo;').replace(/”/gi, '&rdquo;'),
     OriginalInputVal = input.value
   container.innerHTML = ''
@@ -104,5 +106,6 @@ function selfText(arg) {
 function collapse() {
   const collapseIcon = document.querySelectorAll('.collapse-icon')
 
-  collapseIcon.forEach(el => el.addEventListener('click', e => console.log(e.target.parentElement.classList.toggle('open'))))
+  collapseIcon.forEach(el => el.addEventListener('click', e =>
+    e.target.parentElement.classList.toggle('open')))
 }
