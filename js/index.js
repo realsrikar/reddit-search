@@ -2,6 +2,7 @@ const container = document.querySelector('.container'),
   form = document.querySelector('form'),
   input = form.querySelector('input')
 
+let iter = 0;
 
 function fetData(request) {
   fetch('https://www.reddit.com/search.json?q=' + request)
@@ -9,7 +10,9 @@ function fetData(request) {
     .then(blob => blob.data.children)
     .then(blob => {
       blob.forEach(res => {
-        container.innerHTML += `
+        if (iter < 10) {
+          iter++
+          container.innerHTML += `
         <section class="post">
         <span class="score d-block">
         <img src="https://img.4plebs.org/boards/s4s/image/1385/00/1385006781269.png" width="15" style="margin-right: .25em; transform: translate(2px, -1px);">
@@ -24,17 +27,18 @@ function fetData(request) {
         &mdash; <a target="_blank" rel="nofollow noopener noreferrer" href="https://reddit.com${res.data.permalink}">Comments</a>
         </span>
 
-        
+
         <span class="text-warning gold ${res.data.gilded != 0 ? 'd-block' : 'd-none'}">
         ${res.data.gilded != 0 ? res.data.gilded : ''} &times;
         </span>
-        
+
         ${selfText(res)}
         ${preview(res.data.preview, res.data.url)}
 
         </section>`
 
 
+        }
       })
       collapse()
       document.body.classList.remove('hide')
@@ -51,10 +55,11 @@ form.addEventListener('submit', getData)
 
 function getData(e) {
   e.preventDefault()
+  container.innerHTML = ''
+  iter = 0
   document.body.classList.add('hide')
   let InputVal = input.value.replace(/ /gi, '+').replace(/‘/gi, '&lsquo;').replace(/’/gi, '&rsquo;').replace(/“/gi, '&ldquo;').replace(/”/gi, '&rdquo;'),
     OriginalInputVal = input.value
-  container.innerHTML = ''
   fetData(InputVal)
   saveToStorage(OriginalInputVal)
 }
@@ -83,7 +88,7 @@ function saveToStorage(query) {
 input.addEventListener('click', e => e.target.select())
 
 
-function decodeHtml(html) { // 
+function decodeHtml(html) { //
   var txt = document.createElement("textarea");
   txt.innerHTML = html;
   return txt.value;
