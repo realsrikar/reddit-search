@@ -1,3 +1,18 @@
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('./sw.js').then(function(registration) {
+      // Registration was successful
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    }, function(err) {
+      // registration failed :(
+      console.log('ServiceWorker registration failed: ', err);
+    });
+  });
+} else {
+	console.log('Service worker not supported!')
+}
+
+
 const container = document.querySelector('.container'),
   form = document.querySelector('form'),
   input = form.querySelector('input')
@@ -15,7 +30,7 @@ function fetData(request) {
           container.innerHTML += `
         <section class="post">
         <span class="score d-block">
-        <img src="https://img.4plebs.org/boards/s4s/image/1385/00/1385006781269.png" width="15" style="margin-right: .25em; transform: translate(2px, -1px);">
+        <img src="img/updoot.png" width="15" style="margin-right: .25em; transform: translate(2px, -1px);">
         ${res.data.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
         </span>
 
