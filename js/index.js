@@ -52,7 +52,7 @@ if (localStorage.getItem('query')) {
   input.value = JSON.parse(localStorage.getItem('query'))[0]
 }
 form.addEventListener('submit', getData)
-input.addEventListener('change', getData)
+input.addEventListener('keyup', getData)
 
 function getData(e) {
   e.preventDefault()
