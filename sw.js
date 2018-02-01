@@ -18,7 +18,7 @@ self.addEventListener('install', function (event) {
 			return cache.addAll(urlsToCache);
 		})
 
-		.catch(err => {console.log(err); console.dir(err)})
+		.catch(err => console.log(err))
 	);
 });
 

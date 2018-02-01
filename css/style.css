@@ -530,8 +530,23 @@ a:visited {
 
 img {
 	vertical-align: none;
-	max-width: 100%;
 	user-select: none;
+}
+
+video,
+img {
+	max-width: 100%;
+}
+
+.thumb-img {
+	margin: 0.5em auto;
+	max-width: 100%;
+	display: block;
+}
+
+video {
+	display: block;
+	margin: 0 auto;
 }
 
 .container .post {
