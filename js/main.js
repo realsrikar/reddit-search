@@ -15,11 +15,14 @@
 
 const container = document.querySelector('.container'),
   form = document.querySelector('form'),
-  input = form.querySelector('input')
+  input = form.querySelector('input'),
+  close = form.querySelector('.close')
 
 let iter = 0;
 
 function fetData(request) {
+  if (!request || request == '') return
+
   fetch('https://www.reddit.com/search.json?q=' + request)
     .then(blob => blob.json())
     .then(blob => blob.data.children)
@@ -69,7 +72,18 @@ if (localStorage.getItem('query')) {
 form.addEventListener('submit', getData)
 input.addEventListener('keyup', getData)
 
+
+input.value == null ||
+  input.value == undefined ||
+  input.value == '' ? close.style.display = 'none' :
+  close.style.display = 'block';
+
+
 function getData(e) {
+  input.value == null ||
+    input.value == undefined ||
+    input.value == '' ? close.style.display = 'none' :
+    close.style.display = 'block';
   e.preventDefault()
   container.innerHTML = ''
   iter = 0
@@ -83,7 +97,7 @@ function getData(e) {
 function preview(ar, link) {
   if (!ar) return '';
   if (ar.images[0].variants.mp4) {
-    let image = ar.images[0].variants.mp4.source 
+    let image = ar.images[0].variants.mp4.source
     const ht = image.height
     const wt = image.width
     const url = image.url
@@ -92,10 +106,10 @@ function preview(ar, link) {
     <div class="self-text">
     <button class="collapse-icon btn btn-none gif-toggle" data-ht="${ht}" data-wt="${wt}" data-url="${url}" data-type="mp4"></button>
 	  <span class="text"></span>
-  </div>
+    </div>
     `
   } else if (ar.images[0].variants.gif) {
-    let image = ar.images[0].variants.gif.source 
+    let image = ar.images[0].variants.gif.source
     const ht = image.height
     const wt = image.width
     const url = image.url
@@ -104,7 +118,7 @@ function preview(ar, link) {
     <div class="self-text">
     <button class="collapse-icon btn btn-none gif-toggle" data-ht="${ht}" data-wt="${wt}" data-url="${url}" data-type="gif"></button>
 	  <span class="text"></span>
-  </div>
+    </div>
     `
   }
 
@@ -118,18 +132,24 @@ function preview(ar, link) {
 
   return `
   <a target="_blank" rel="nofollow noopener noreferrer" href="${link}">
-    <img class="thumb-img" src="${url}" style="max-height: ${(ht / 9 * 16) + 'px'}" class="d-block mx-auto">
+  <img class="thumb-img" src="${url}" style="max-height: ${(ht / 9 * 16) + 'px'}" class="d-block mx-auto">
   </a>`
 }
 
-function saveToStorage(query) {
+function saveToStorage(query = '') {
   queryArray = [query]
   localStorage.setItem('query', JSON.stringify(queryArray))
   fetData(JSON.parse(localStorage.getItem('query'))[0].replace(/ /gi, '+').replace(/‘/gi, '&lsquo;').replace(/’/gi, '&rsquo;').replace(/“/gi, '&ldquo;').replace(/”/gi, '&rdquo;'))
 }
 
 
-input.addEventListener('click', e => e.target.select())
+// input.addEventListener('click', e => e.target.select())
+close.addEventListener('click', e => {
+  form.reset()
+  container.innerHTML = '';
+  e.target.style.display = 'none';
+  saveToStorage()
+})
 
 
 function decodeHtml(html) { //
@@ -144,8 +164,8 @@ function selfText(arg) {
 
   return `
   <div class="self-text">
-	  <button class="collapse-icon btn btn-none"></button>
-	  <span class="text">${decodeHtml(arg.data.selftext_html)}</span>
+  <button class="collapse-icon btn btn-none"></button>
+  <span class="text">${decodeHtml(arg.data.selftext_html)}</span>
   </div>`
 }
 
@@ -154,21 +174,23 @@ function selfText(arg) {
 function collapse() {
   const collapseIcon = document.querySelectorAll('.collapse-icon')
 
-  collapseIcon.forEach(el => el.addEventListener('click', e => {
+  container.addEventListener('click', e => {
+    if (e.target.classList.contains('collapse-icon')) {
       e.target.parentElement.classList.toggle('open')
 
       if (e.target.classList.contains('gif-toggle')) {
-       if (e.target.dataset.type == 'mp4') {
-         e.target.nextElementSibling.innerHTML = `
-          <video playsinline autoplay controls heigth="${e.target.dataset.ht}" width="${e.target.dataset.wt}">
-            <source src="${e.target.dataset.url}" type="video/mp4">
-          </video>
-         `
-       }
-      } else {
+        if (e.target.dataset.type == 'mp4') {
+          e.target.nextElementSibling.innerHTML = `
+        <video playsinline autoplay controls heigth="${e.target.dataset.ht}" width="${e.target.dataset.wt}">
+        <source src="${e.target.dataset.url}" type="video/mp4">
+        </video>
+        `
+        }
+      } else if (e.target.dataset.type == 'gif') {
         e.target.nextElementSibling.innerHTML = `
-          <img heigth="${e.target.dataset.ht}" width="${e.target.dataset.wt} src="${e.target.dataset.url}" type="image/gif">
-         `
+      <img heigth="${e.target.dataset.ht}" width="${e.target.dataset.wt} src="${e.target.dataset.url}" type="image/gif">
+      `
       }
-  }))
+    }
+  })
 }
