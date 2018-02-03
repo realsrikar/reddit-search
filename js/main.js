@@ -111,11 +111,11 @@ class search {
     <section class="post">
       <span class="score d-block">
       <img src="img/updoot.png" width="15" style="margin-right: .25em; transform: translate(2px, -1px);">
-        ${res.data.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
+      ${res.data.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
       </span>
-
+      
       <a target="_blank" rel="nofollow noopener noreferrer" href="https://reddit.com/u/${res.data.author}">u/${res.data.author}</a>:
-
+      
       "${res.data.title}"
           <span class="info d-block my-2">
             <a href="https://reddit.com/${res.data.subreddit_name_prefixed}" target="_blank"  rel="nofollow noopener noreferrer">${res.data.subreddit_name_prefixed}</a>
@@ -131,7 +131,7 @@ class search {
           </span>
 
         ${_this.selfText(res)}
-        ${_this.preview(res.data.preview, res.data.url)}
+        ${_this.preview(res.data.preview, res.data.url, res.data)}
 
     </section>`
   }
@@ -214,7 +214,7 @@ class search {
     })
   }
 
-  preview(ar, link) {
+  preview(ar, link, res) {
     if (!ar) return '';
     if (ar.images[0].variants.mp4) {
       let image = ar.images[0].variants.mp4.source
@@ -224,7 +224,7 @@ class search {
 
       return `
       <div class="self-text">
-      <button class="collapse-icon btn btn-none gif-toggle" data-ht="${ht}" data-wt="${wt}" data-url="${url}" data-type="mp4"></button>
+        <button class="collapse-icon btn btn-none gif-toggle" data-ht="${ht}" data-wt="${wt}" data-url="${url}" data-type="mp4"></button>
       <span class="text"></span>
       </div>
       `
@@ -249,10 +249,10 @@ class search {
     const ht = image.height
     const wt = image.width + 'px'
     const url = image.url
-
     return `
     <a target="_blank" class="post-link" rel="nofollow noopener noreferrer" href="${link}">
-    <img class="thumb-img" src="${url}" style="max-height: ${(ht / 9 * 16) + 'px'}" class="d-block mx-auto">
+      <img class="thumb-img" src="${url}" style="max-height: ${(ht / 9 * 16) + 'px'}" class="d-block mx-auto">
+      <p class="img-domain">${res.domain}</p>
     </a>`
   }
 }
