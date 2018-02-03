@@ -13,199 +13,228 @@
 // }
 // commented out due to console errors
 
-const container = document.querySelector('.container'),
-  form = document.querySelector('form'),
-  input = form.querySelector('input'),
-  close = form.querySelector('.close')
+let _this
+class search {
+  constructor() {
 
-let iter = 0;
+    _this = this
 
-function fetData(request) {
-  if (!request || request == '') return
+    this.params = {
+      query: '',
+      limit: 10
+    }
 
-  fetch('https://www.reddit.com/search.json?limit=4?q=' + request)
-    .then(res => {
-      if (!res.ok) {
-        console.error('nope')
-        return false;
-      }
+    // elements
+    this.els = {
+      container: document.querySelector('.container'),
+      form: document.querySelector('form'),
+      input: document.querySelector('input'),
+      close: document.querySelector('.close'),
+      collapseIcon: '' // will be added when searched
+    }
 
-      return res
-    })
-    .then(blob => blob.json())
-    .then(blob => blob.data.children)
-    .then(blob => {
-      blob.forEach(res => {
-        if (iter < 10) {
-          iter++
-          container.innerHTML += `
-        <section class="post">
-        <span class="score d-block">
-        <img src="img/updoot.png" width="15" style="margin-right: .25em; transform: translate(2px, -1px);">
-        ${res.data.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-        </span>
+    this.vals = {
+      original: '',
+      queryArray: []
+    }
 
-        <a target="_blank" rel="nofollow noopener noreferrer" href="https://reddit.com/u/${res.data.author}">u/${res.data.author}</a>:
+    // functions
 
-        "${res.data.title}"
-        <span class="info d-block my-2">
-        <a href="https://reddit.com/${res.data.subreddit_name_prefixed}" target="_blank" rel="nofollow noopener noreferrer">${res.data.subreddit_name_prefixed}</a>
-        &mdash; <a target="_blank" rel="nofollow noopener noreferrer" href="https://reddit.com${res.data.permalink}">Comments</a>
-        </span>
+    this.getFromLS() // LS = localStorage
+    this.setCloseState()
+    this.AEL() // add event listeners
 
 
-        <span class="text-warning gold ${res.data.gilded != 0 ? 'd-block' : 'd-none'}">
-        ${res.data.gilded != 0 ? res.data.gilded : ''} &times;
-        </span>
+  }
 
-        ${selfText(res)}
-        ${preview(res.data.preview, res.data.url)}
+  decodeHtml(html) { //
+    var txt = document.createElement("textarea");
+    txt.innerHTML = html;
+    return txt.value;
+  }
 
-        </section>`
+  setCloseState() {
+    this.els.input.value == null ||
+      this.els.input.value == undefined ||
+      this.els.input.value == '' ? this.els.close.style.display = 'none' :
+      this.els.close.style.display = 'block';
+  }
 
+  getFromLS() {
+    if (!localStorage.getItem('query')) return;
 
+    _this.els.input.setAttribute('value',  JSON.parse(localStorage.getItem('query'))[0])
+    _this.fetchData(JSON.parse(localStorage.getItem('query'))[0])
+    
+  }
+
+  saveToStorage(query = '') {
+    _this.vals.queryArray = [query]
+    localStorage.setItem('query', JSON.stringify(_this.vals.queryArray))
+
+    _this.fetchData((JSON.parse(localStorage.getItem('query'))[0]))
+  }
+
+  fetchData(requestQuery = '') {
+    if (!requestQuery || requestQuery == '') return
+    _this.els.container.innerHTML = ''
+
+    fetch(`https://www.reddit.com/search.json?limit=${this.params.limit}&q=${encodeURI(requestQuery)}`)
+      .then(res => {
+        if (!res.ok) {
+          console.error('Bad Request')
+          return;
         }
+        return res
       })
-      collapse()
-      document.body.classList.remove('hide')
-    })
-    .catch(err => console.info(err));
-}
-
-
-if (localStorage.getItem('query')) {
-  fetData(JSON.parse(localStorage.getItem('query'))[0])
-  input.value = JSON.parse(localStorage.getItem('query'))[0]
-}
-form.addEventListener('submit', getData)
-input.addEventListener('keyup', getData)
-
-
-input.value == null ||
-  input.value == undefined ||
-  input.value == '' ? close.style.display = 'none' :
-  close.style.display = 'block';
-
-
-function getData(e) {
-  if ((e.keyCode > 36 && e.keyCode < 41) || e.keyCode == 32 || e.keyCode == 91 || e.keyCode == 9 || e.keyCode == 2 || (e.keyCode > 15 && e.keyCode < 21)) return;
-  input.value == null ||
-    input.value == undefined ||
-    input.value == '' ? close.style.display = 'none' :
-    close.style.display = 'block';
-  e.preventDefault()
-  container.innerHTML = ''
-  iter = 0
-  document.body.classList.add('hide')
-  let InputVal = input.value.replace(/ /gi, '+').replace(/‘/gi, '&lsquo;').replace(/’/gi, '&rsquo;').replace(/“/gi, '&ldquo;').replace(/”/gi, '&rdquo;'),
-    OriginalInputVal = input.value
-
-  if (OriginalInputVal.length > 512) {
-    container.innerHTML = '<h1>Query may not be longer than 512 characters</h1>';
-    return;
+      .then(blob => blob.json())
+      .then(blob => blob.data.children)
+      .then(blob => {
+        blob.forEach(res => {
+          _this.els.container.innerHTML += _this.textDefault(res)
+        })
+        _this.collapse()
+      })
+      .catch(err => console.info(err));
   }
 
-  fetData(InputVal)
-  saveToStorage(OriginalInputVal)
-}
+  textDefault(res) {
+    return `
+    <section class="post">
+      <span class="score d-block">
+      <img src="img/updoot.png" width="15" style="margin-right: .25em; transform: translate(2px, -1px);">
+        ${res.data.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
+      </span>
 
-function preview(ar, link) {
-  if (!ar) return '';
-  if (ar.images[0].variants.mp4) {
-    let image = ar.images[0].variants.mp4.source
-    const ht = image.height
-    const wt = image.width
-    const url = image.url
+      <a target="_blank" rel="nofollow noopener noreferrer" href="https://reddit.com/u/${res.data.author}">u/${res.data.author}</a>:
+
+      "${res.data.title}"
+          <span class="info d-block my-2">
+            <a href="https://reddit.com/${res.data.subreddit_name_prefixed}" target="_blank"  rel="nofollow noopener noreferrer">${res.data.subreddit_name_prefixed}</a>
+
+            &mdash;
+
+            <a target="_blank" rel="nofollow noopener noreferrer" href="https://reddit.com${res.data.permalink}">Comments</a>
+          </span>
+
+
+          <span class="text-warning gold ${res.data.gilded != 0 ? 'd-block' : 'd-none'}">
+            ${res.data.gilded != 0 ? res.data.gilded : ''} &times;
+          </span>
+
+        ${this.selfText(res)}
+        ${this.preview(res.data.preview, res.data.url)}
+
+    </section>`
+  }
+
+  selfText(arg) {
+    if (!arg.data.selftext_html) return ''
 
     return `
-    <div class="self-text">
-    <button class="collapse-icon btn btn-none gif-toggle" data-ht="${ht}" data-wt="${wt}" data-url="${url}" data-type="mp4"></button>
-	  <span class="text"></span>
-    </div>
-    `
-  } else if (ar.images[0].variants.gif) {
-    let image = ar.images[0].variants.gif.source
-    const ht = image.height
-    const wt = image.width
-    const url = image.url
+      <div class="self-text">
+      <button class="collapse-icon btn btn-none"></button>
+      <span class="text">${this.decodeHtml(arg.data.selftext_html)}</span>
+      </div>`
+  }
 
-    return `
-    <div class="self-text">
-    <button class="collapse-icon btn btn-none gif-toggle" data-ht="${ht}" data-wt="${wt}" data-url="${url}" data-type="gif"></button>
-	  <span class="text"></span>
-    </div>
-    `
+  AEL() {
+    _this.els.form.addEventListener('submit', _this.getData)
+    _this.els.input.addEventListener('keyup', _this.getData)
+    _this.els.close.addEventListener('click', _this.resetData)
+  }
+
+  getData(e) {
+    _this.setCloseState()
+
+    if ((e.keyCode > 36 && e.keyCode < 41) || e.keyCode == 32 || e.keyCode == 91 || e.keyCode == 9 || e.keyCode == 2 || (e.keyCode > 15 && e.keyCode < 21)) return;
+    if (_this.vals.original.length > 512) {
+      container.innerHTML = '<h1>Query may not be longer than 512 characters</h1>';
+      return;
+    }
+
+    e.preventDefault()
+    _this.els.container.innerHTML = ''
+    _this.vals.original = _this.els.input.value
+
+    _this.fetchData(_this.vals.original)
+    _this.saveToStorage(_this.vals.original)
+
+  }
+
+  resetData(e) {
+    _this.els.form.reset()
+    _this.els.container.innerHTML = '';
+    e.target.style.display = 'none';
+    _this.saveToStorage()
   }
 
 
+  collapse() {
+    _this.els.collapseIcon = document.querySelectorAll('.collapse-icon')
 
-  let image = ar.images[0].source
+    _this.els.container.addEventListener('click', e => {
+      if (e.target.classList.contains('collapse-icon')) {
+        e.target.parentElement.classList.toggle('open')
 
-  const ht = image.height
-  const wt = image.width + 'px'
-  const url = image.url
-
-  return `
-  <a target="_blank" class="post-link" rel="nofollow noopener noreferrer" href="${link}">
-  <img class="thumb-img" src="${url}" style="max-height: ${(ht / 9 * 16) + 'px'}" class="d-block mx-auto">
-  </a>`
-}
-
-function saveToStorage(query = '') {
-  queryArray = [query]
-  localStorage.setItem('query', JSON.stringify(queryArray))
-  fetData(JSON.parse(localStorage.getItem('query'))[0].replace(/ /gi, '+').replace(/‘/gi, '&lsquo;').replace(/’/gi, '&rsquo;').replace(/“/gi, '&ldquo;').replace(/”/gi, '&rdquo;'))
-}
-
-
-// input.addEventListener('click', e => e.target.select())
-close.addEventListener('click', e => {
-  form.reset()
-  container.innerHTML = '';
-  e.target.style.display = 'none';
-  saveToStorage()
-})
-
-
-function decodeHtml(html) { //
-  var txt = document.createElement("textarea");
-  txt.innerHTML = html;
-  return txt.value;
-}
-
-
-function selfText(arg) {
-  if (!arg.data.selftext_html) return ''
-
-  return `
-  <div class="self-text">
-  <button class="collapse-icon btn btn-none"></button>
-  <span class="text">${decodeHtml(arg.data.selftext_html)}</span>
-  </div>`
-}
-
-
-
-function collapse() {
-  const collapseIcon = document.querySelectorAll('.collapse-icon')
-
-  container.addEventListener('click', e => {
-    if (e.target.classList.contains('collapse-icon')) {
-      e.target.parentElement.classList.toggle('open')
-
-      if (e.target.classList.contains('gif-toggle')) {
-        if (e.target.dataset.type == 'mp4') {
+        if (e.target.classList.contains('gif-toggle')) {
+          if (e.target.dataset.type == 'mp4') {
+            e.target.nextElementSibling.innerHTML = `
+          <video playsinline autoplay controls heigth="${e.target.dataset.ht}" width="${e.target.dataset.wt}">
+          <source src="${e.target.dataset.url}" type="video/mp4">
+          </video>
+          `
+          }
+        } else if (e.target.dataset.type == 'gif') {
           e.target.nextElementSibling.innerHTML = `
-        <video playsinline autoplay controls heigth="${e.target.dataset.ht}" width="${e.target.dataset.wt}">
-        <source src="${e.target.dataset.url}" type="video/mp4">
-        </video>
+        <img heigth="${e.target.dataset.ht}" width="${e.target.dataset.wt} src="${e.target.dataset.url}" type="image/gif">
         `
         }
-      } else if (e.target.dataset.type == 'gif') {
-        e.target.nextElementSibling.innerHTML = `
-      <img heigth="${e.target.dataset.ht}" width="${e.target.dataset.wt} src="${e.target.dataset.url}" type="image/gif">
-      `
       }
+    })
+  }
+
+  preview(ar, link) {
+    if (!ar) return '';
+    if (ar.images[0].variants.mp4) {
+      let image = ar.images[0].variants.mp4.source
+      const ht = image.height
+      const wt = image.width
+      const url = image.url
+
+      return `
+      <div class="self-text">
+      <button class="collapse-icon btn btn-none gif-toggle" data-ht="${ht}" data-wt="${wt}" data-url="${url}" data-type="mp4"></button>
+      <span class="text"></span>
+      </div>
+      `
+    } else if (ar.images[0].variants.gif) {
+      let image = ar.images[0].variants.gif.source
+      const ht = image.height
+      const wt = image.width
+      const url = image.url
+
+      return `
+      <div class="self-text">
+      <button class="collapse-icon btn btn-none gif-toggle" data-ht="${ht}" data-wt="${wt}" data-url="${url}" data-type="gif"></button>
+      <span class="text"></span>
+      </div>
+      `
     }
-  })
+
+
+
+    let image = ar.images[0].source
+
+    const ht = image.height
+    const wt = image.width + 'px'
+    const url = image.url
+
+    return `
+    <a target="_blank" class="post-link" rel="nofollow noopener noreferrer" href="${link}">
+    <img class="thumb-img" src="${url}" style="max-height: ${(ht / 9 * 16) + 'px'}" class="d-block mx-auto">
+    </a>`
+  }
 }
+
+new search
