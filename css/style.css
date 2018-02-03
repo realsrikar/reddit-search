@@ -482,25 +482,29 @@ a:visited {
 }
 
 @media (min-width: 576px) {
-  form {
+  form,
+  footer {
     max-width: 540px;
   }
 }
 
 @media (min-width: 768px) {
-  form {
+  form,
+  footer {
     max-width: 720px;
   }
 }
 
 @media (min-width: 992px) {
-  form {
+  form,
+  footer {
     max-width: 960px;
   }
 }
 
 @media (min-width: 1200px) {
-  form {
+  form,
+  footer {
     max-width: 1140px;
   }
 }
@@ -634,4 +638,22 @@ video {
 .post-link:hover .img-domain {
   color: #0062cc;
   text-decoration: underline;
+}
+
+html {
+  position: relative;
+  padding-bottom: 2em;
+  min-height: 100vh;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%)
+}
+
+footer p {
+  margin: 0;
+  padding: .5em;
 }

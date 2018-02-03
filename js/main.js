@@ -161,12 +161,12 @@ class search {
   }
 
   getData(e) {
-    
+
     if ((e.keyCode > 36 && e.keyCode < 41) ||
-    e.keyCode == 32 ||
-    e.keyCode == 91 ||
-    e.keyCode == 9 ||
-    e.keyCode == 2 ||
+      e.keyCode == 32 ||
+      e.keyCode == 91 ||
+      e.keyCode == 9 ||
+      e.keyCode == 2 ||
       (e.keyCode > 15 && e.keyCode < 21)) return;
     if (_this.vals.original.length > 512) {
       container.innerHTML = '<h1>Query may not be longer than 512 characters</h1>';
