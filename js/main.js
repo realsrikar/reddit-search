@@ -63,9 +63,9 @@ class search {
   getFromLS() {
     if (!localStorage.getItem('query')) return;
 
-    _this.els.input.setAttribute('value',  JSON.parse(localStorage.getItem('query'))[0])
+    _this.els.input.value = JSON.parse(localStorage.getItem('query'))[0]
     _this.fetchData(JSON.parse(localStorage.getItem('query'))[0])
-    
+
   }
 
   saveToStorage(query = '') {
@@ -77,7 +77,6 @@ class search {
 
   fetchData(requestQuery = '') {
     if (!requestQuery || requestQuery == '') return
-    _this.els.container.innerHTML = ''
 
     fetch(`https://www.reddit.com/search.json?limit=${this.params.limit}&q=${encodeURI(requestQuery)}`)
       .then(res => {
@@ -87,11 +86,20 @@ class search {
         }
         return res
       })
+      .then(blob => {
+        return blob
+      })
       .then(blob => blob.json())
       .then(blob => blob.data.children)
       .then(blob => {
+        let iter = 0
         blob.forEach(res => {
-          _this.els.container.innerHTML += _this.textDefault(res)
+          iter++
+          if (iter == 1) {
+            _this.els.container.innerHTML = _this.textDefault(res)
+          } else {
+            _this.els.container.innerHTML += _this.textDefault(res)
+          }
         })
         _this.collapse()
       })
@@ -122,11 +130,12 @@ class search {
             ${res.data.gilded != 0 ? res.data.gilded : ''} &times;
           </span>
 
-        ${this.selfText(res)}
-        ${this.preview(res.data.preview, res.data.url)}
+        ${_this.selfText(res)}
+        ${_this.preview(res.data.preview, res.data.url)}
 
     </section>`
   }
+
 
   selfText(arg) {
     if (!arg.data.selftext_html) return ''
@@ -139,22 +148,33 @@ class search {
   }
 
   AEL() {
-    _this.els.form.addEventListener('submit', _this.getData)
-    _this.els.input.addEventListener('keyup', _this.getData)
+    _this.els.form.addEventListener('submit', e => {
+      _this.els.container.innerHTML = ''
+      _this.getData(e)
+    })
+    _this.els.input.addEventListener('keyup', e => {
+      _this.setCloseState()
+      if ('ontouchstart' in window) return;
+      _this.getData(e)
+    })
     _this.els.close.addEventListener('click', _this.resetData)
   }
 
   getData(e) {
-    _this.setCloseState()
-
-    if ((e.keyCode > 36 && e.keyCode < 41) || e.keyCode == 32 || e.keyCode == 91 || e.keyCode == 9 || e.keyCode == 2 || (e.keyCode > 15 && e.keyCode < 21)) return;
+    
+    if ((e.keyCode > 36 && e.keyCode < 41) ||
+    e.keyCode == 32 ||
+    e.keyCode == 91 ||
+    e.keyCode == 9 ||
+    e.keyCode == 2 ||
+      (e.keyCode > 15 && e.keyCode < 21)) return;
     if (_this.vals.original.length > 512) {
       container.innerHTML = '<h1>Query may not be longer than 512 characters</h1>';
       return;
     }
 
     e.preventDefault()
-    _this.els.container.innerHTML = ''
+    document.querySelector('.container').innerHTML = ''
     _this.vals.original = _this.els.input.value
 
     _this.fetchData(_this.vals.original)
@@ -173,7 +193,7 @@ class search {
   collapse() {
     _this.els.collapseIcon = document.querySelectorAll('.collapse-icon')
 
-    _this.els.container.addEventListener('click', e => {
+    document.documentElement.addEventListener('click', e => {
       if (e.target.classList.contains('collapse-icon')) {
         e.target.parentElement.classList.toggle('open')
 
