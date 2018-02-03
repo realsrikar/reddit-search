@@ -20,11 +20,11 @@ You can visit [realsrikar/reddit-search](https://realsrikar.github.io/reddit-sea
 
 - Make this a PWA
 
-  - Cache Resources
+  - Cache Resources -- DONE - DISABLED DUE TO ERRORS
   - Custom 404 page
   - manifest.json
 
 - Show user flair
-- Use something like webpack to transpile and ugliy JS
-- Rewrite JS so that it's not a mess
+- Use something like webpack to transpile and ugliy JS 
+- Rewrite JS so that it's not a mess -- IN PROGRESS
 - Optimize

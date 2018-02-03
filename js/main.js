@@ -23,7 +23,15 @@ let iter = 0;
 function fetData(request) {
   if (!request || request == '') return
 
-  fetch('https://www.reddit.com/search.json?q=' + request)
+  fetch('https://www.reddit.com/search.json?limit=4?q=' + request)
+    .then(res => {
+      if (!res.ok) {
+        console.error('nope')
+        return false;
+      }
+
+      return res
+    })
     .then(blob => blob.json())
     .then(blob => blob.data.children)
     .then(blob => {
@@ -80,6 +88,7 @@ input.value == null ||
 
 
 function getData(e) {
+  if ((e.keyCode > 36 && e.keyCode < 41) || e.keyCode == 32 || e.keyCode == 91 || e.keyCode == 9 || e.keyCode == 2 || (e.keyCode > 15 && e.keyCode < 21)) return;
   input.value == null ||
     input.value == undefined ||
     input.value == '' ? close.style.display = 'none' :
@@ -90,6 +99,12 @@ function getData(e) {
   document.body.classList.add('hide')
   let InputVal = input.value.replace(/ /gi, '+').replace(/‘/gi, '&lsquo;').replace(/’/gi, '&rsquo;').replace(/“/gi, '&ldquo;').replace(/”/gi, '&rdquo;'),
     OriginalInputVal = input.value
+
+  if (OriginalInputVal.length > 512) {
+    container.innerHTML = '<h1>Query may not be longer than 512 characters</h1>';
+    return;
+  }
+
   fetData(InputVal)
   saveToStorage(OriginalInputVal)
 }
@@ -131,7 +146,7 @@ function preview(ar, link) {
   const url = image.url
 
   return `
-  <a target="_blank" rel="nofollow noopener noreferrer" href="${link}">
+  <a target="_blank" class="post-link" rel="nofollow noopener noreferrer" href="${link}">
   <img class="thumb-img" src="${url}" style="max-height: ${(ht / 9 * 16) + 'px'}" class="d-block mx-auto">
   </a>`
 }
