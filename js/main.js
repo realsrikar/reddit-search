@@ -29,7 +29,7 @@ class search {
     this.els = {
       container: document.querySelector('.container'),
       form: document.querySelector('form'),
-      input: document.querySelector('input[type="text"]'),
+      input: document.querySelector('input'),
       close: document.querySelector('.close'),
       collapseIcon: '', // will be added when searched
       sortSelect: document.querySelector('select')
