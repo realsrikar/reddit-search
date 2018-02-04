@@ -18,13 +18,13 @@ class search {
   constructor() {
 
     _this = this
-
+    
     this.params = {
       query: '',
       limit: 10,
       sort: 'confidence'
     }
-
+    
     // elements
     this.els = {
       container: document.querySelector('.container'),
@@ -34,7 +34,7 @@ class search {
       collapseIcon: '', // will be added when searched
       sortSelect: document.querySelector('select')
     }
-
+    
     this.vals = {
       original: '',
       queryArray: []
@@ -194,6 +194,7 @@ class search {
     _this.els.form.reset()
     _this.els.container.innerHTML = '';
     e.target.style.display = 'none';
+    _this.params.sort = 'confidence'
     _this.saveToStorage()
   }
 
