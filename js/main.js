@@ -201,7 +201,7 @@ class search {
   collapse() {
     _this.els.collapseIcon = document.querySelectorAll('.collapse-icon')
 
-    document.documentElement.addEventListener('click', e => {
+    _this.els.container.addEventListener('click', e => {
 
       if (e.target.classList.contains('collapse-icon')) {
         e.target.parentElement.classList.toggle('open')
