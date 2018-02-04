@@ -21,16 +21,18 @@ class search {
 
     this.params = {
       query: '',
-      limit: 10
+      limit: 10,
+      sort: 'confidence'
     }
 
     // elements
     this.els = {
       container: document.querySelector('.container'),
       form: document.querySelector('form'),
-      input: document.querySelector('input'),
+      input: document.querySelector('input[type="text"]'),
       close: document.querySelector('.close'),
-      collapseIcon: '' // will be added when searched
+      collapseIcon: '', // will be added when searched
+      sortSelect: document.querySelector('select')
     }
 
     this.vals = {
@@ -78,7 +80,7 @@ class search {
   fetchData(requestQuery = '') {
     if (!requestQuery || requestQuery == '') return
 
-    fetch(`https://www.reddit.com/search.json?limit=${this.params.limit}&q=${encodeURI(requestQuery)}`)
+    fetch(`https://www.reddit.com/search.json?limit=${this.params.limit}&q=${encodeURI(requestQuery)}&sort=${_this.params.sort}`)
       .then(res => {
         if (!res.ok) {
           console.error('Bad Request')
@@ -158,6 +160,12 @@ class search {
       _this.getData(e)
     })
     _this.els.close.addEventListener('click', _this.resetData)
+
+    _this.els.sortSelect.addEventListener('change', _this.sortChange)
+  }
+  sortChange() {
+    _this.params.sort = this.options[this.selectedIndex].value
+    _this.fetchData(_this.els.input.value)
   }
 
   getData(e) {
