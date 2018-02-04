@@ -45,6 +45,7 @@ class search {
     this.getFromLS() // LS = localStorage
     this.setCloseState()
     this.AEL() // add event listeners
+    this.collapse()
 
 
   }
@@ -103,7 +104,6 @@ class search {
             _this.els.container.innerHTML += _this.textDefault(res)
           }
         })
-        _this.collapse()
       })
       .catch(err => console.info(err));
   }
@@ -144,7 +144,7 @@ class search {
 
     return `
       <div class="self-text">
-      <button class="collapse-icon btn btn-none"></button>
+      <button class="collapse-icon btn btn-none self-text-btn"></button>
       <span class="text">${this.decodeHtml(arg.data.selftext_html)}</span>
       </div>`
   }
@@ -202,6 +202,7 @@ class search {
     _this.els.collapseIcon = document.querySelectorAll('.collapse-icon')
 
     document.documentElement.addEventListener('click', e => {
+
       if (e.target.classList.contains('collapse-icon')) {
         e.target.parentElement.classList.toggle('open')
 
