@@ -627,7 +627,7 @@ video {
 }
 
 .collapse-icon {
-  margin: .75em 0 .25em;
+  margin: .75em 0;
   --size: 1.5em;
   width: var(--size);
   height: var(--size);
