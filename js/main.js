@@ -220,8 +220,8 @@ class search {
         }
       }
 
-    return;
     })
+    return;
   }
 
   preview(ar, link, res) {
