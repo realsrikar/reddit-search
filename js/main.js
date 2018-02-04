@@ -219,6 +219,8 @@ class search {
         `
         }
       }
+
+    return;
     })
   }
 
