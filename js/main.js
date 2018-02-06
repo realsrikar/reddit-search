@@ -116,15 +116,15 @@ class search {
       ${res.data.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
       </span>
       
-      <a target="_blank" rel="nofollow noopener noreferrer" href="https://reddit.com/u/${res.data.author}">u/${res.data.author}</a>:
+      <a data-target="_blank" rel="nofollow noopener noreferrer" href="https://reddit.com/u/${res.data.author}">u/${res.data.author}</a>:
       
       "${res.data.title}"
           <span class="info d-block my-2">
-            <a href="https://reddit.com/${res.data.subreddit_name_prefixed}" target="_blank"  rel="nofollow noopener noreferrer">${res.data.subreddit_name_prefixed}</a>
+            <a href="https://reddit.com/${res.data.subreddit_name_prefixed}" data-target="_blank"  rel="nofollow noopener noreferrer">${res.data.subreddit_name_prefixed}</a>
 
             &mdash;
 
-            <a target="_blank" rel="nofollow noopener noreferrer" href="https://reddit.com${res.data.permalink}">Comments</a>
+            <a data-target="_blank" rel="nofollow noopener noreferrer" href="https://reddit.com${res.data.permalink}">Comments</a>
           </span>
 
 
@@ -194,7 +194,8 @@ class search {
     _this.els.form.reset()
     _this.els.container.innerHTML = '';
     e.target.style.display = 'none';
-    _this.params.sort = 'confidence'
+    _this.params.sort = 'confidence';
+    _this.els.input.focus()
     _this.saveToStorage()
   }
 
@@ -262,7 +263,7 @@ class search {
     const wt = image.width + 'px'
     const url = image.url
     return `
-    <a target="_blank" class="post-link" rel="nofollow noopener noreferrer" href="${link}">
+    <a data-target="_blank" class="post-link" rel="nofollow noopener noreferrer" href="${link}">
       <img class="thumb-img" src="${url}" style="max-height: ${(ht / 9 * 16) + 'px'}" class="d-block mx-auto">
       <p class="img-domain">${res.domain}</p>
     </a>`
