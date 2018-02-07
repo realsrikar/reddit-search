@@ -14,17 +14,17 @@
 // commented out due to console errors
 
 let _this
-class search {
+class Search {
   constructor() {
 
     _this = this
-    
+
     this.params = {
       query: '',
       limit: 10,
       sort: 'confidence'
     }
-    
+
     // elements
     this.els = {
       container: document.querySelector('.container'),
@@ -34,7 +34,7 @@ class search {
       collapseIcon: '', // will be added when searched
       sortSelect: document.querySelector('select')
     }
-    
+
     this.vals = {
       original: '',
       queryArray: []
@@ -113,11 +113,11 @@ class search {
     <section class="post">
       <span class="score d-block">
       <img src="img/updoot.png" width="15" style="margin-right: .25em; transform: translate(2px, -1px);">
-      ${res.data.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
+      ${res.data.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
       </span>
-      
+
       <a data-target="_blank" rel="nofollow noopener noreferrer" href="https://reddit.com/u/${res.data.author}">u/${res.data.author}</a>:
-      
+
       "${res.data.title}"
           <span class="info d-block my-2">
             <a href="https://reddit.com/${res.data.subreddit_name_prefixed}" data-target="_blank"  rel="nofollow noopener noreferrer">${res.data.subreddit_name_prefixed}</a>
@@ -217,9 +217,7 @@ class search {
           `
           }
         } else if (e.target.dataset.type == 'gif') {
-          e.target.nextElementSibling.innerHTML = `
-        <img heigth="${e.target.dataset.ht}" width="${e.target.dataset.wt} src="${e.target.dataset.url}" type="image/gif">
-        `
+          e.target.nextElementSibling.innerHTML = `<img heigth="${e.target.dataset.ht}" width="${e.target.dataset.wt} src="${e.target.dataset.url}" type="image/gif">`
         }
       }
 
@@ -262,12 +260,13 @@ class search {
     const ht = image.height
     const wt = image.width + 'px'
     const url = image.url
+
     return `
     <a data-target="_blank" class="post-link" rel="nofollow noopener noreferrer" href="${link}">
-      <img class="thumb-img" src="${url}" style="max-height: ${(ht / 9 * 16) + 'px'}" class="d-block mx-auto">
+      <img class="thumb-img" src="${url}" style="max-height: ${(ht / (9 * 16)) + 'px'}" class="d-block mx-auto">
       <p class="img-domain">${res.domain}</p>
     </a>`
   }
 }
 
-new search
+new Search
