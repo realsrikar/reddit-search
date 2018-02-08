@@ -147,9 +147,10 @@ class Search {
   AEL() {
     this.els.form.addEventListener('submit', e => {
       this.els.container.innerHTML = ''
+      this.setCloseState()
+      this.els.input.blur()
       this.getData(e)
     })
-    this.getData = this.getData.bind(this)
 
     this.els.input.addEventListener('keyup', e => {
       this.setCloseState()
@@ -158,11 +159,7 @@ class Search {
     })
 
     this.els.close.addEventListener('click', e => this.resetData(e))
-    this.resetData = this.resetData.bind(this)
-
-
     this.els.sortSelect.addEventListener('change', e => this.sortChange(e))
-    this.sortChange = this.sortChange.bind(this)
   }
   sortChange() {
     this.params.sort = this.options[this.selectedIndex].value
@@ -182,7 +179,6 @@ class Search {
     }
 
     e.preventDefault()
-    document.querySelector('.container').innerHTML = ''
     this.vals.original = this.els.input.value
 
     this.fetchData(this.vals.original)

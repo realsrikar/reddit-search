@@ -12,35 +12,15 @@ const gulp = require('gulp'), // 1.
 
   htmlmin = require('gulp-htmlmin'), // 7.
 
-  uglify = require('gulp-uglify-es').default, // 8.
+  uglify = require('gulp-uglify-es').default,
   babel = require('gulp-babel'),
-  concat = require('gulp-concat'), // 9.
   eslint = require('gulp-eslint'),
+  concat = require('gulp-concat'),
 
-  imagemin = require('gulp-imagemin'), // 10.
-  png = require('imagemin-pngquant'), // 11. & 12.
-  jpg = require('imagemin-jpeg-recompress'), // 12.
-  svg = require('imagemin-svgo'); // 11.
-
-// 1. Need for Gulp
-
-// 2. Combine JS & CSS Processes
-
-// 3. Live reload
-
-// 4. Compiles SASS
-// 5. Applies vendorprefixes
-
-// 6. Sourcemaps for SASS and JS -- Concatenating and minifing files means lines are not the same in the browser inspector. This creates .map files to correct that. Do not push .map files into production.
-
-// 7. Remove HTML comments and minify
-
-// 8. Minify JS
-// 9. Combine all JS and make just one HTTP request
-
-// 10. Imagemin allows us to use plugins
-// 11. Doesn't work too well / Despends on the image
-// 12. Plugins to minify images
+  imagemin = require('gulp-imagemin'),
+  png = require('imagemin-pngquant'),
+  jpg = require('imagemin-jpeg-recompress'),
+  svg = require('imagemin-svgo');
 
 
 gulp.task('lint', () => {
@@ -61,12 +41,11 @@ gulp.task('lint', () => {
 });
 
 gulp.task('css', function() {
-  const sassnew = gulp.src('src/sass/**/*.sass')
+  gulp.src('src/sass/**/*.sass')
     .pipe(sourcemap.init())
     .pipe(sass({
       outputStyle: 'compressed'
     }).on('error', sass.logError))
-  es.merge(sassnew)
     .pipe(prefix())
     .pipe(sourcemap.write('.'))
     .pipe(gulp.dest('docs/css'))
@@ -76,30 +55,22 @@ gulp.task('css', function() {
 });
 
 gulp.task('js', function() {
-  const concatnew = gulp.src('src/js/**/*.js')
+  gulp.src('src/js/**/*.js')
     .pipe(sourcemap.init())
-    .pipe(concat('bundle.js'));
-
-  const babelnew = gulp.src('src/app.js')
     .pipe(babel({
       presets: ['env']
     }))
-
-  const uglifynew = gulp.src('src/js/build.js');
-
-  es.merge(concatnew, babelnew, uglifynew)
+    .pipe(concat('bundle.js'))
     .pipe(uglify())
     .pipe(sourcemap.write('.'))
-    .pipe(gulp.dest('docs/js/'));
+    .pipe(gulp.dest('docs/js/'))
 });
 
-gulp.task('sw', _ => {
+gulp.task('sw', function() {
   gulp.src('./sw.js')
     .pipe(uglify())
     .pipe(gulp.dest('docs/'))
 })
-
-
 
 gulp.task('html', function() {
   gulp.src('./src/*.html')

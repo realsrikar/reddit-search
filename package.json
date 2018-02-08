@@ -5,6 +5,9 @@
   "main": "js/test.js",
   "repository": "https://github.com/realsrikar/reddit-search.git",
   "author": "Srikar",
+  "scripts": {
+    "start": "gulp"
+  },
   "license": "MIT",
   "private": false,
   "dependencies": {
