@@ -69,7 +69,7 @@ gulp.task('css', function() {
   es.merge(sassnew)
     .pipe(prefix())
     .pipe(sourcemap.write('.'))
-    .pipe(gulp.dest('dist/css'))
+    .pipe(gulp.dest('docs/css'))
     .pipe(browserSync.reload({
       stream: true
     }));
@@ -90,13 +90,13 @@ gulp.task('js', function() {
   es.merge(concatnew, babelnew, uglifynew)
     .pipe(uglify())
     .pipe(sourcemap.write('.'))
-    .pipe(gulp.dest('dist/js/'));
+    .pipe(gulp.dest('docs/js/'));
 });
 
 gulp.task('sw', _ => {
   gulp.src('./sw.js')
     .pipe(uglify())
-    .pipe(gulp.dest('dist/'))
+    .pipe(gulp.dest('docs/'))
 })
 
 
@@ -110,7 +110,7 @@ gulp.task('html', function() {
       minifyJS: true,
       removeEmptyAttributes: true
     }))
-    .pipe(gulp.dest('./dist/'));
+    .pipe(gulp.dest('./docs/'));
 });
 
 
@@ -134,7 +134,7 @@ gulp.task('images', () =>
       }]
     })
   ]))
-  .pipe(gulp.dest('dist/img'))
+  .pipe(gulp.dest('docs/img'))
 );
 
 
@@ -142,7 +142,7 @@ gulp.task('images', () =>
 gulp.task('serve', function() {
   browserSync.init({
     server: {
-      baseDir: "./dist"
+      baseDir: "./docs"
     },
     ui: false,
     port: 7800,
