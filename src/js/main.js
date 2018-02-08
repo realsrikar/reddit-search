@@ -157,11 +157,11 @@ class Search {
       this.getData(e)
     })
 
-    this.els.close.addEventListener('click', this.resetData)
+    this.els.close.addEventListener('click', e => this.resetData(e))
     this.resetData = this.resetData.bind(this)
 
 
-    this.els.sortSelect.addEventListener('change', this.sortChange)
+    this.els.sortSelect.addEventListener('change', e => this.sortChange(e))
     this.sortChange = this.sortChange.bind(this)
   }
   sortChange() {
