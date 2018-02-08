@@ -263,7 +263,7 @@ class Search {
 
     return `
     <a data-target="_blank" class="post-link" rel="nofollow noopener noreferrer" href="${link}">
-      <img class="thumb-img" src="${url}" style="max-height: ${(ht / (9 * 16)) + 'px'}" class="d-block mx-auto">
+      <img class="thumb-img" src="${url}" style="max-height: ${((ht / 9) * 16) + 'px'}" class="d-block mx-auto">
       <p class="img-domain">${res.domain}</p>
     </a>`
   }
