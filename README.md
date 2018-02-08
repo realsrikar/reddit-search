@@ -25,4 +25,3 @@ You can visit [realsrikar/reddit-search](https://realsrikar.github.io/reddit-sea
   - manifest.json
 
 - Show user flair
-- Use something like webpack to transpile and ugliy JS 
