@@ -17,7 +17,7 @@ const gulp = require('gulp'), // 1.
   concat = require('gulp-concat'), // 9.
   eslint = require('gulp-eslint'),
 
-imagemin = require('gulp-imagemin'), // 10.
+  imagemin = require('gulp-imagemin'), // 10.
   png = require('imagemin-pngquant'), // 11. & 12.
   jpg = require('imagemin-jpeg-recompress'), // 12.
   svg = require('imagemin-svgo'); // 11.
@@ -61,7 +61,7 @@ gulp.task('lint', () => {
 });
 
 gulp.task('css', function() {
-  const sassnew = gulp.src('src/sass/*.sass')
+  const sassnew = gulp.src('src/sass/**/*.sass')
     .pipe(sourcemap.init())
     .pipe(sass({
       outputStyle: 'compressed'
@@ -156,7 +156,7 @@ gulp.task('serve', function() {
 gulp.task('default', ['watch', 'html', 'js', 'sw', 'css', 'images', 'serve', 'lint']);
 
 gulp.task('watch', function() {
-  gulp.watch("src/sass/*", ['css']);
+  gulp.watch("src/sass/**/*", ['css']);
   gulp.watch("src/js/*.js", browserSync.reload);
   gulp.watch("src/*.html", ['html']);
   gulp.watch("src/*.html", browserSync.reload);
