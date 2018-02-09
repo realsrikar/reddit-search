@@ -10,10 +10,12 @@
   },
   "license": "MIT",
   "private": false,
-  "dependencies": {
+  "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "browser-sync": "^2.23.6",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^4.1.0",
     "gulp-babel": "^7.0.1",
@@ -28,8 +30,7 @@
     "imagemin-pngquant": "^5.0.1",
     "imagemin-svgo": "^6.0.0"
   },
-  "devDependencies": {
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.8.0"
+  "dependencies": {
+    "bootstrap": "^4.0.0"
   }
 }
