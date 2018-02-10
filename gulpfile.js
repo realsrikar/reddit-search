@@ -14,7 +14,7 @@ const gulp = require('gulp'),
   svg = require('imagemin-svgo'),
   rev = require('gulp-rev'),
   revReplace = require('gulp-rev-replace'),
-
+  revDel = require('gulp-rev-delete-original'),
   path = require('path');
 
 
@@ -125,6 +125,7 @@ gulp.task('build-files', ['html', 'js', 'sw', 'css', 'images']);
 gulp.task('build-rev', function() {
   gulp.src(['./docs/**/*', '!./docs/*.html', '!**/*.map'])
   .pipe(rev())
+  .pipe(revDel())
   .pipe(gulp.dest('./docs/'))
   .pipe(rev.manifest())
   .pipe(gulp.dest('./docs/'));
