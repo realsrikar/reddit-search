@@ -19,3 +19,13 @@ video, img
 
 .btn.btn-none
   background-color: initial
+
+
+// bootstrap/grid allows for a container but it will
+// also out put a lot of other things
+// that we dont need. So we will use their mixin.
+.container,
+form, 
+footer
+  @include make-container()
+  @include make-container-max-widths()
