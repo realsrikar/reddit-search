@@ -123,7 +123,7 @@ gulp.task('watch', function() {
 gulp.task('build-files', ['html', 'js', 'sw', 'css', 'images']);
 
 gulp.task('build-rev', function() {
-  gulp.src(['js/**/*.js', 'css/**/*.css', 'img/**/*.svg'])
+  gulp.src(['./docs/**/*', '!./docs/*.html', '!**/*.map', '!img/*.png', '!img/*.jpg'])
   .pipe(rev())
   .pipe(revDel())
   .pipe(gulp.dest('./docs/'))
