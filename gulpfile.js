@@ -123,10 +123,10 @@ gulp.task('watch', function() {
 gulp.task('build-files', ['html', 'js', 'sw', 'css', 'images']);
 
 gulp.task('build-rev', function() {
-  gulp.src(['js/**/*.js', 'css/**/*.css', 'img/**/*.svg'])
+  gulp.src(['docs/js/**/*.js', 'docs/css/**/*.css', 'docs/img/**/*.svg'])
   .pipe(rev())
-  .pipe(revDel())
   .pipe(gulp.dest('./docs/'))
+  .pipe(revDel())
   .pipe(rev.manifest())
   .pipe(gulp.dest('./docs/'));
 });

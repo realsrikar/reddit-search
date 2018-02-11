@@ -7,9 +7,9 @@ You can visit [realsrikar/reddit-search](https://realsrikar.github.io/reddit-sea
 ## Development
 
 - Uses the fetch API for JSON requests
-- Does _not_ use jQuery
-- Does _not_ use any JS framework
+- Does _not_ use jQuery (jQuery in package.json is to avoid errors. Bootstrap requires you install jQuery as a peer dependency.)
 - Bootstrap
+- Uses Gulp
 
 ## Features
 
