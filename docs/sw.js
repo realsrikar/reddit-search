@@ -1,0 +1,1 @@
+const CACHE_NAME="my-site-cache-v1",urlsToCache=["./img/arrow_down.svg","./img/reddit-sheet.png","./img/updoot.png"];addEventListener("install",e=>{fetch("./rev-manifest.json").then(e=>e.json()).then(e=>Object.keys(e).forEach(t=>urlsToCache.push(e[t]))),e.waitUntil(caches.open(CACHE_NAME).then(e=>e.addAll(urlsToCache)).catch(e=>console.log(e)))});

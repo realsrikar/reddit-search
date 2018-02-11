@@ -54,7 +54,7 @@ gulp.task('js', function() {
 
 gulp.task('sw', function() {
   gulp.src('./sw.js')
-    .pipe(uglify())
+    .pipe(uglify().on('error', error => console.error(`${error.filename} on (${error.line}:${error.col})`)))
     .pipe(gulp.dest('docs/'))
 })
 
@@ -120,10 +120,10 @@ gulp.task('watch', function() {
 });
 
 
-gulp.task('build-files', ['html', 'js', 'sw', 'css', 'images']);
+gulp.task('build-files', ['html', 'js', 'css']);
 
 gulp.task('build-rev', function() {
-  gulp.src(['./docs/**/*', '!./docs/*.html', '!**/*.map', '!./docs/img/*.png', '!./docs/img/*.jpg', '!./docs/sw.js'])
+  gulp.src(['./docs/**/*', '!./docs/*.html', '!**/*.map', '!./docs/img/*', '!./docs/sw.js'])
   .pipe(rev())
   .pipe(revDel())
   .pipe(gulp.dest('./docs/'))

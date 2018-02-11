@@ -1,21 +1,23 @@
-// const CACHE_NAME = 'my-site-cache-v1';
-// const urlsToCache = [
-//     './css/main.css',
-//     './img/arrow_down.svg',
-//     './css/bootstrap.css',
-//     './img/arrow_up.svg',
-//     './img/reddit-sheet.png',
-//     './img/updoot.png',
-//     './js/main.js'
-// ];
+const CACHE_NAME = 'my-site-cache-v1';
+const urlsToCache = [
+  './img/arrow_down.svg',
+  './img/reddit-sheet.png',
+  './img/updoot.png'
+];
 
-// addEventListener('install', e => {
-//     browser.webRequest.onBeforeRequest.addListener(
-//         logURL, {
-//             urls: ["<all_urls>"]
-//         }
-//     );
-// })
+addEventListener('install', e => {
+  fetch('./rev-manifest.json')
+  .then(blob => blob.json())
+  .then(blob => Object.keys(blob).forEach(cur => urlsToCache.push(blob[cur])));
+  debugger
+  e.waitUntil(
+
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(urlsToCache))
+      .catch(err => console.log(err))
+  )
+
+})
 
 
 // addEventListener('fetch', e => {

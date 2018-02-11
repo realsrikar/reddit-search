@@ -19,6 +19,7 @@ module.exports = {
     "localStorage": false,
     "throw": false,
     "window": false,
-    "fetch": false
+    "fetch": false,
+    "navigator": false
   }
 };
