@@ -161,8 +161,8 @@ class Search {
     this.els.close.addEventListener('click', e => this.resetData(e))
     this.els.sortSelect.addEventListener('change', e => this.sortChange(e))
   }
-  sortChange() {
-    this.params.sort = this.options[this.selectedIndex].value
+  sortChange(e) {
+    this.params.sort = e.target.options[e.target.selectedIndex].value
     this.fetchData(this.els.input.value)
   }
 
