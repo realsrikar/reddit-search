@@ -10,6 +10,7 @@ You can visit [realsrikar/reddit-search](https://realsrikar.github.io/reddit-sea
 - Does _not_ use jQuery
 - Does _not_ use any JS framework
 - Bootstrap
+- PWA
 
 ## Features
 
@@ -18,10 +19,6 @@ You can visit [realsrikar/reddit-search](https://realsrikar.github.io/reddit-sea
 
 ## TODO
 
-- Make this a PWA
-
-  - Cache Resources -- DONE - DISABLED DUE TO ERRORS
-  - Custom 404 page
-  - manifest.json
+- Patch PWA errrs -- manifest image at least 512px, more res.
 
 - Show user flair
