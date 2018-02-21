@@ -1,0 +1,14 @@
+{
+  "name": "Reddit Search",
+  "short_name": "Reddit Search",
+  "lang": "en-US",
+  "start_url": "/reddit-search/",
+  "display": "standalone",
+  "theme_color": "#3F51B5",
+  "icons": [
+    {
+      "src": "home.png",
+      "sizes": "256x256"
+    }
+  ]
+}
