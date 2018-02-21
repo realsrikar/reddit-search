@@ -1,17 +1,11 @@
-// if ('serviceWorker' in navigator) {
-//   window.addEventListener('load', () => {
-//     navigator.serviceWorker.register('./sw.js').then((registration) => {
-//       // Registration was successful
-//       console.log('ServiceWorker registration successful with scope: ', registration.scope);
-//     }, (err) => {
-//       // registration failed :(
-//       console.log('ServiceWorker registration failed: ', err);
-//     });
-//   });
-// } else {
-//   console.log('Service worker not supported!')
-// }
-// commented out due to console errors
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+     .then((registration) => {
+       console.log('thanks');
+    }, e => console.log(e))
+  });
+}
 
 class Search {
   constructor() {
