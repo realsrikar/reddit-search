@@ -1,11 +1,13 @@
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js')
-     .then((registration) => {
-       console.log('thanks');
-    }, e => console.log(e))
-  });
+      .then(() => {
+        console.log('thanks');
+      }, e => console.log(e))
+  })
 }
+
+const html = String.raw
 
 class Search {
   constructor() {
@@ -39,9 +41,9 @@ class Search {
     this.collapse()
   }
 
-  decodeHtml(html) { //
+  decodeHtml(pram) {
     const txt = document.createElement('textarea');
-    txt.innerHTML = html;
+    txt.innerHTML = pram;
     return txt.value;
   }
 
@@ -98,7 +100,7 @@ class Search {
   }
 
   textDefault(res) {
-    return `
+    return html `
     <section class="post">
       <span class="score d-block">
       <img src="img/updoot.png" width="15" style="margin-right: .25em; transform: translate(2px, -1px);">
@@ -131,7 +133,7 @@ class Search {
   thisText(arg) {
     if (!arg.data.thistext_html) return ''
 
-    return `
+    return html `
       <div class="self-text">
       <button class="collapse-icon btn btn-none self-text-btn"></button>
       <span class="text">${this.decodeHtml(arg.data.thistext_html)}</span>
@@ -198,14 +200,15 @@ class Search {
 
         if (e.target.classList.contains('gif-toggle')) {
           if (e.target.dataset.type == 'mp4') {
-            e.target.nextElementSibling.innerHTML = `
+            e.target.nextElementSibling.innerHTML = html`
           <video playsinline autoplay controls heigth="${e.target.dataset.ht}" width="${e.target.dataset.wt}">
           <source src="${e.target.dataset.url}" type="video/mp4">
           </video>
           `
           }
         } else if (e.target.dataset.type == 'gif') {
-          e.target.nextElementSibling.innerHTML = `<img heigth="${e.target.dataset.ht}" width="${e.target.dataset.wt} src="${e.target.dataset.url}" type="image/gif">`
+          e.target.nextElementSibling.innerHTML =html`
+          <img heigth="${e.target.dataset.ht}" width="${e.target.dataset.wt} src="${e.target.dataset.url}" type="image/gif" />`
         }
       }
     })
@@ -216,10 +219,18 @@ class Search {
     if (ar.images[0].variants.mp4) {
       const image = ar.images[0].variants.mp4.source
 
-      const { ht, wt, url } = { ht: image.height, wt: image.width, url: image.url }
+      const {
+        ht,
+        wt,
+        url
+      } = {
+        ht: image.height,
+        wt: image.width,
+        url: image.url
+      }
 
 
-      return `<div class="self-text">
+      return html `<div class="self-text">
         <button class="collapse-icon btn btn-none gif-toggle" data-ht="${ht}" data-wt="${wt}" data-url="${url}" data-type="mp4"></button>
       <span class="text"></span>
       </div>`
@@ -227,9 +238,17 @@ class Search {
       const image = ar.images[0].variants.gif.source
 
 
-      const { ht, wt, url } = { ht: image.height, wt: image.width, url: image.url }
+      const {
+        ht,
+        wt,
+        url
+      } = {
+        ht: image.height,
+        wt: image.width,
+        url: image.url
+      }
 
-      return `<div class="slef-text">
+      return html `<div class="slef-text">
       <button class="collapse-icon btn btn-none gif-toggle" data-ht="${ht}" data-wt="${wt}" data-url="${url}" data-type="gif"></button>
       <span class="text"></span>
       </div>`
@@ -238,9 +257,15 @@ class Search {
 
     const image = ar.images[0].source
 
-    const { ht, url } = { ht: image.height, url: image.url }
+    const {
+      ht,
+      url
+    } = {
+      ht: image.height,
+      url: image.url
+    }
 
-    return `
+    return html `
     <a data-target="_blank" class="post-link" rel="nofollow noopener noreferrer" href="${link}">
       <img class="thumb-img" src="${url}" style="max-height: ${`${(ht / 9) * 16}px`}" class="d-block mx-auto">
       <p class="img-domain">${res.domain}</p>

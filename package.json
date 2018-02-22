@@ -8,7 +8,8 @@
   "scripts": {
     "start": "yarn dev",
     "dev": "gulp",
-    "build": "rm -rf docs/sw.js && gulp build && gulp sw"
+    "build": "rm -rf docs/sw.js && gulp build && gulp sw",
+    "gh": "git add . && git commit -am \"gh-pages\" && git push"
   },
   "license": "MIT",
   "private": false,

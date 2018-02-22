@@ -11,7 +11,10 @@ module.exports = {
     "no-return-assign": "off",
     "padded-blocks": "off",
     "class-methods-use-this": "off",
-    "prefer-destructuring": "off"
+    "prefer-destructuring": "off",
+    "comma-dangle": "off",
+    "template-tag-spacing": "off",
+    "space-infix-ops": "off"
   },
 
   "globals": {
